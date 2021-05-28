@@ -1,11 +1,10 @@
-import { render, screen } from '@testing-library/react';
 import App from './App';
 
 import {shallow} from 'enzyme'
 
   
 
-describe("Quizz App Testing", () => {
+describe("App component Testing", () => {
   let wrapper
   beforeEach(() => {
     wrapper = shallow(<App />)

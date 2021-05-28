@@ -1,0 +1,31 @@
+@import '../../Style/variables';
+
+
+html, body {
+    margin: 0;
+    height: 100%;
+
+}
+body {
+    background-color: $light-grey;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.app-container {
+    width: fit-content;
+    margin: 0 auto;
+    padding: 0;
+
+    h1 {
+        margin: 0 0 0.2em 0.5em;
+        font-family: $oswald;
+        color: $dark-color;
+        font-size: 45px;
+    }
+
+    .infos {
+        font-family: $roboto;
+    }
+}
