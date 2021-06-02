@@ -23,7 +23,8 @@
 
         #img-container {
             #flag-img {
-                width: 7vw;
+                height: 8vh;
+                margin-top: 0.3em;
                 border-radius: 0.5em;
                 box-shadow: 0 0 12px $dark-color;
             }
@@ -49,6 +50,26 @@
             &:hover {
                 background-color: $dark-color;
                 color: white;
+            }
+
+        }
+
+        .wrong {
+            background-color: $bad;
+            color: white;
+
+            &:hover {
+                background-color: $bad;
+            }
+
+        }
+
+        .good {
+            background-color: $good;
+            color: white;
+            &:hover {
+                background-color: $good;
+                
             }
 
         }

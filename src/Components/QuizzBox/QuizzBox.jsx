@@ -5,18 +5,25 @@ import './QuizzBox.scss'
 
 const QuizzBox = ({countries}) => {
 
+    const [score, setScore] = useState(0)
     const [countryArray, setCountryArray] = useState([])
     const [chosenCountry, setChosenCountry] = useState({})
     const [chosenQuestion, setChosenQuestion] = useState(null)
     const [chosenAnswers, setChosenAnswers] = useState([])
+    const [goodAnswerIndex, setGoodAnswerIndex] = useState(null)
+    const [wrongAnswerIndex, setWrongAnswerIndex] = useState(null)
+
 
 
 
     
     useEffect(() => {
-    extractCountryRdm(countries)
-    chooseQuestionRdm()
-    }, [])
+    if (score >= 0) {
+        extractCountryRdm(countries)
+        chooseQuestionRdm()
+    }
+
+    }, [score])
 
     useEffect(() => {
         countryArray.length > 0 && chosenCountry && chosenQuestion !== null && getAnswersRandom()
@@ -54,12 +61,38 @@ const QuizzBox = ({countries}) => {
         
     }
 
+    const handleResponse = (response, index) => {
+
+        if ((chosenQuestion === 0 && response === chosenCountry.name) || (chosenQuestion === 1 && response === chosenCountry.capital) || (chosenQuestion === 2 && response === chosenCountry.subregion) ) {
+            setGoodAnswerIndex(index)
+            resetQuestions(true)
+        } else   {
+            setWrongAnswerIndex(index)
+            resetQuestions(false)
+
+        }
+        
+    }
+
+    const resetQuestions = (isCorrect) => {
+        setTimeout(() => { 
+            isCorrect ? setScore(score + 1) : setScore(0)
+            setWrongAnswerIndex(null)
+            setGoodAnswerIndex(null)
+         }, 500);
+        
+    }
+
     const setRandomNum = (num) => {
         return Math.floor(Math.random() * num);
     }
 
+
+
+
     return (
         <div id="quizz-box">
+            <h2>{score}</h2>
             <div id="question-container">
                 {chosenQuestion === 0 && <div id="img-container"><img id="flag-img" src={chosenCountry.flag}/></div>}
                 <p id="sentence">{chosenQuestion === 0 ? "Which country does this flag belong to ?" : chosenQuestion === 1 ? `The capital of ${chosenCountry.name} is:` : `Where ${chosenCountry.name} is located ?`}</p>
@@ -67,7 +100,7 @@ const QuizzBox = ({countries}) => {
 
             <div id="answers-container">
                 {chosenAnswers.map((element, i) => 
-                    <button className="answers-btn" key={i}>{element}</button>
+                    <button className={`answers-btn ${goodAnswerIndex === i && "good"} ${wrongAnswerIndex === i && "wrong"}`}   key={i} onClick={() => handleResponse(element, i)}>{element} </button>
                 )}
             </div>
         </div>
