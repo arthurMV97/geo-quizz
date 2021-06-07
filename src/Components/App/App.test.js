@@ -1,25 +1,29 @@
 import App from './App';
-
 import {shallow} from 'enzyme'
+import { findByTestAttr } from '../../Fonctions/TestFunctions';
 
   
 
-describe("App component Testing", () => {
-  let wrapper
+
+
+describe("App Component", () => {
+  let component
   beforeEach(() => {
-    wrapper = shallow(<App />)
+    component = shallow(<App />)
   })
 
   test('renders App Title', () => {
-    expect(wrapper.find('h1').text()).toContain("Geo Quizz")
+    const title = findByTestAttr(component, 'title')
+    expect(title.length).toBe(1)
   })
 
   test('render child component QuizzBox', () => {
-    expect(wrapper.find('QuizzBox').exists()).toBeTruthy()
+    expect(component.find('QuizzBox').exists()).toBeTruthy()
   })
 
-  test('render infos', () => {
-    expect(wrapper.find('.infos').exists()).toBeTruthy()
+  test('render infos footer', () => {
+    const footer = findByTestAttr(component, 'infos-footer')
+    expect(footer.length).toBe(1)
   })
 
 

@@ -1,18 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import './QuizzBox.scss'
+import EndPopUp from "../EndPopUp/EndPopUp";
+
 
 
 
 const QuizzBox = ({countries}) => {
 
-    const [score, setScore] = useState(0)
+    const [score, setScore] = useState(null)
     const [countryArray, setCountryArray] = useState([])
     const [chosenCountry, setChosenCountry] = useState({})
     const [chosenQuestion, setChosenQuestion] = useState(null)
     const [chosenAnswers, setChosenAnswers] = useState([])
-    const [goodAnswerIndex, setGoodAnswerIndex] = useState(null)
-    const [wrongAnswerIndex, setWrongAnswerIndex] = useState(null)
+    const [goodAnswer, setGoodAnswer] = useState('')
+    const [wrongAnswer, setWrongAnswer] = useState('')
+    const [popUpBool, setPopUpBool] = useState(false)
 
+    const keys = ["name", "capital", "subregion"]
 
 
 
@@ -47,7 +51,7 @@ const QuizzBox = ({countries}) => {
 
     const getAnswersRandom = () => {
         let countriesArr = countryArray
-        const key = chosenQuestion === 0 ? "name" : chosenQuestion === 1 ? "capital" : "subregion"
+        const key = keys[chosenQuestion]
         let answers = [chosenCountry[key]]
 
         while (answers.length !== 4) {
@@ -55,6 +59,10 @@ const QuizzBox = ({countries}) => {
             const rdmSplice = setRandomNum(2)
             answers.splice(rdmSplice, 0, countriesArr[rdmNum][key])
             countriesArr = countriesArr.filter(elmt => elmt !== countriesArr[rdmNum])
+            answers = [...new Set(answers)]; //For unique values
+            answers = answers.filter(e => e.length > 0)
+            console.log(answers)
+
         }
 
         answers.length === 4 && setChosenAnswers(answers)
@@ -64,11 +72,12 @@ const QuizzBox = ({countries}) => {
     const handleResponse = (response, index) => {
 
         if ((chosenQuestion === 0 && response === chosenCountry.name) || (chosenQuestion === 1 && response === chosenCountry.capital) || (chosenQuestion === 2 && response === chosenCountry.subregion) ) {
-            setGoodAnswerIndex(index)
+            setGoodAnswer(response)
             resetQuestions(true)
         } else   {
-            setWrongAnswerIndex(index)
-            resetQuestions(false)
+            setWrongAnswer(response)
+            setGoodAnswer(chosenCountry[keys[chosenQuestion]])
+            setTimeout(() => {setPopUpBool(true)}, 500)          
 
         }
         
@@ -76,12 +85,14 @@ const QuizzBox = ({countries}) => {
 
     const resetQuestions = (isCorrect) => {
         setTimeout(() => { 
-            isCorrect ? setScore(score + 1) : setScore(0)
-            setWrongAnswerIndex(null)
-            setGoodAnswerIndex(null)
+            isCorrect ? setScore(score + 1) : setScore(score === 0 ? null : 0)
+            setWrongAnswer('')
+            setGoodAnswer('')
+            setPopUpBool(false)
          }, 500);
         
     }
+
 
     const setRandomNum = (num) => {
         return Math.floor(Math.random() * num);
@@ -92,7 +103,6 @@ const QuizzBox = ({countries}) => {
 
     return (
         <div id="quizz-box">
-            <h2>{score}</h2>
             <div id="question-container">
                 {chosenQuestion === 0 && <div id="img-container"><img id="flag-img" src={chosenCountry.flag}/></div>}
                 <p id="sentence">{chosenQuestion === 0 ? "Which country does this flag belong to ?" : chosenQuestion === 1 ? `The capital of ${chosenCountry.name} is:` : `Where ${chosenCountry.name} is located ?`}</p>
@@ -100,9 +110,11 @@ const QuizzBox = ({countries}) => {
 
             <div id="answers-container">
                 {chosenAnswers.map((element, i) => 
-                    <button className={`answers-btn ${goodAnswerIndex === i && "good"} ${wrongAnswerIndex === i && "wrong"}`}   key={i} onClick={() => handleResponse(element, i)}>{element} </button>
+                    <button className={`answers-btn ${goodAnswer === element && "good"} ${wrongAnswer === element && "wrong"}`}   key={i} onClick={() => handleResponse(element, i)}>{element} </button>
                 )}
             </div>
+
+            <EndPopUp score={score}  isOpen={popUpBool} retry={() => {resetQuestions(false)}} />
         </div>
     );
 };

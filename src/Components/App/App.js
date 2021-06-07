@@ -16,9 +16,9 @@ function App() {
   })
   return (
     <div className="app-container">
-      <h1>Geo Quizz</h1>
+      <h1 data-test="title">Geo Quizz</h1>
       {countriesArray.length > 0 && <QuizzBox countries={countriesArray} />}
-    <p className="infos">Arthur Morin - 2021</p>
+    <p className="infos" data-test = "infos-footer">Arthur Morin - 2021</p>
     </div>
   );
 }

@@ -1,0 +1,52 @@
+@import '../../Style/variables';
+
+
+#pop-up {
+    transition: all 0.5s ease-in-out ;
+    position: absolute;
+    padding: 1em;
+    background-color: $light-grey;
+    border-radius: inherit;
+    width: inherit;
+    height: inherit;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 0 0 -10em;
+    opacity: 0;
+    z-index: -2;
+    
+    
+    
+
+
+
+    h2 {
+        font-family: $oswald;
+        color: $dark-color;
+        margin: 0 0 1em;
+    }
+
+    button {
+        background-color: $dark-color ;
+        border: none;
+        border-radius: 1em;
+        width: 10em;
+        height: 3em;
+        font: bold 1em $roboto ;
+        color: white;
+        cursor: pointer;
+        &:hover {
+            background-color:$good;
+            color: white;
+        }
+    }
+}
+
+.is-open {
+    margin: 0 0 0 -1em !important;
+    opacity: 1 !important;
+    background-color: $light-green !important;
+    z-index: 2 !important;
+}
