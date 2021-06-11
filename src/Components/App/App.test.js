@@ -11,15 +11,18 @@ describe("App Component", () => {
   beforeEach(() => {
     component = shallow(<App />)
   })
+  
 
   test('renders App Title', () => {
     const title = findByTestAttr(component, 'title')
+    console.log(component.debug());
     expect(title.length).toBe(1)
   })
 
-  test('render child component QuizzBox', () => {
-    expect(component.find('QuizzBox').exists()).toBeTruthy()
-  })
+  // test('render child component QuizzBox', () => {
+  //   quizzBoxComponent = findByTestAttr(component, 'quizzbox-component')
+  //   expect(quizzBoxComponent.length).toBe(1)
+  // })
 
   test('render infos footer', () => {
     const footer = findByTestAttr(component, 'infos-footer')

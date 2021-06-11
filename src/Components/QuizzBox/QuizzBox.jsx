@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import './QuizzBox.scss'
 import EndPopUp from "../EndPopUp/EndPopUp";
-
-
+import { setRandomNum } from '../../Fonctions/DataFunctions';
 
 
 const QuizzBox = ({countries}) => {
@@ -62,15 +61,11 @@ const QuizzBox = ({countries}) => {
             answers = [...new Set(answers)]; //For unique values
             answers = answers.filter(e => e.length > 0)
             console.log(answers)
-
         }
-
         answers.length === 4 && setChosenAnswers(answers)
-        
     }
 
     const handleResponse = (response, index) => {
-
         if ((chosenQuestion === 0 && response === chosenCountry.name) || (chosenQuestion === 1 && response === chosenCountry.capital) || (chosenQuestion === 2 && response === chosenCountry.subregion) ) {
             setGoodAnswer(response)
             resetQuestions(true)
@@ -78,9 +73,7 @@ const QuizzBox = ({countries}) => {
             setWrongAnswer(response)
             setGoodAnswer(chosenCountry[keys[chosenQuestion]])
             setTimeout(() => {setPopUpBool(true)}, 500)          
-
         }
-        
     }
 
     const resetQuestions = (isCorrect) => {
@@ -90,22 +83,17 @@ const QuizzBox = ({countries}) => {
             setGoodAnswer('')
             setPopUpBool(false)
          }, 500);
-        
-    }
+            }
 
 
-    const setRandomNum = (num) => {
-        return Math.floor(Math.random() * num);
-    }
-
-
+  
 
 
     return (
         <div id="quizz-box">
-            <div id="question-container">
+            <div id="question-container" data-test="question-container">
                 {chosenQuestion === 0 && <div id="img-container"><img id="flag-img" src={chosenCountry.flag}/></div>}
-                <p id="sentence">{chosenQuestion === 0 ? "Which country does this flag belong to ?" : chosenQuestion === 1 ? `The capital of ${chosenCountry.name} is:` : `Where ${chosenCountry.name} is located ?`}</p>
+                <p id="sentence" data-test="question">{chosenQuestion === 0 ? "Which country does this flag belong to ?" : chosenQuestion === 1 ? `The capital of ${chosenCountry.name} is:` : `Where ${chosenCountry.name} is located ?`}</p>
             </div>
 
             <div id="answers-container">
